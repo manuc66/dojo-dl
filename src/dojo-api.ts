@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios/index";
+import axios, { AxiosInstance } from "axios";
 import moment from "moment";
 import { wrapper } from "axios-cookiejar-support";
 import { CookieJar } from "tough-cookie";
