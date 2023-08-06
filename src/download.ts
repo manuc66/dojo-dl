@@ -1,6 +1,7 @@
 import { mkdirp } from "mkdirp";
 import { DojoAPI, Item } from "./dojo-api";
 import Path from "path";
+import FS from "fs";
 import fs from "fs";
 
 const IMAGE_DIR = "../images";
@@ -9,11 +10,23 @@ function createDirectory(path: string): boolean {
 }
 
 export async function processItemDownload(
+  downloadFolder: (string | null),
   dojoAPI: DojoAPI,
   item: Item,
   knownDate: Set<string>
 ): Promise<void> {
-  const directoryPath = Path.resolve(__dirname, IMAGE_DIR, item.date);
+  let directoryPath : string;
+
+  if (downloadFolder == null) {
+    directoryPath = Path.resolve(__dirname, IMAGE_DIR, item.date);
+  } else if (!FS.existsSync(downloadFolder)) {
+    directoryPath = Path.resolve(Path.resolve(__dirname, IMAGE_DIR), item.date)
+    console.log(`Folder ${downloadFolder} does not exist, using this one instead: ${Path.resolve(__dirname, IMAGE_DIR)}`)
+  }
+  else {
+    directoryPath = Path.resolve(downloadFolder, item.date);
+  }
+
   if (!knownDate.has(item.date)) {
     if (createDirectory(directoryPath)) {
       console.log(`Directory created: ${directoryPath}`);

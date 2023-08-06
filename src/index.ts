@@ -10,6 +10,7 @@ main();
 async function main(): Promise<void> {
   const email = readEnv("DOJO_EMAIL");
   const password = readEnv("DOJO_PASSWORD");
+  const downloadFolder = readEnv("DOWNLOAD_FOLDER");
   let dojoAPI = new DojoAPI();
 
   await dojoAPI.login(email, password);
@@ -18,7 +19,7 @@ async function main(): Promise<void> {
 
   const getItems = () => dojoAPI.getAllItems();
   const processItem = async (item: Item) =>
-    await processItemDownload(dojoAPI, item, knownDate);
+    await processItemDownload(downloadFolder, dojoAPI, item, knownDate);
 
   const maxConcurrentOp = 4;
   const totalItems = await processConcurrently(
