@@ -26,15 +26,15 @@
     "@types/chai": "^4.3.5",
     "@types/chai-string": "^1.4.2",
     "@types/config": "^3.3.0",
-    "@types/mocha": "^10.0.0",
-    "@types/node": "^20.4.5",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^20.4.8",
     "@types/tough-cookie": "^4.0.2",
-    "chai": "^4.3.6",
+    "chai": "^4.3.7",
     "chai-string": "^1.5.0",
     "eslint": "^8.46.0",
-    "mocha": "^10.1.0",
+    "mocha": "^10.2.0",
     "nyc": "^15.1.0",
-    "prettier": "^3.0.0",
+    "prettier": "^3.0.1",
     "ts-mockito": "^2.6.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6",
@@ -46,6 +46,6 @@
     "dotenv": "^16.3.1",
     "mkdirp": "^3.0.1",
     "moment": "^2.29.4",
-    "tough-cookie": "^4.1.2"
+    "tough-cookie": "^4.1.3"
   }
 }
