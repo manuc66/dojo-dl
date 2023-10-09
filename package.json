@@ -25,7 +25,7 @@
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@types/chai": "^4.3.5",
     "@types/chai-string": "^1.4.2",
-    "@types/config": "^3.3.0",
+    "@types/config": "^3.3.1",
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.5.7",
     "@types/tough-cookie": "^4.0.2",
