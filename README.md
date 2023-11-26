@@ -1,4 +1,5 @@
 # dojo-dl
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmanuc66%2Fdojo-dl.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmanuc66%2Fdojo-dl?ref=badge_shield)
 
 Command line tool to download videos &amp; images from a classdojo account.
