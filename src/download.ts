@@ -10,20 +10,24 @@ function createDirectory(path: string): boolean {
 }
 
 export async function processItemDownload(
-  downloadFolder: (string | null),
+  downloadFolder: string | null,
   dojoAPI: DojoAPI,
   item: Item,
-  knownDate: Set<string>
+  knownDate: Set<string>,
 ): Promise<void> {
-  let directoryPath : string;
+  let directoryPath: string;
 
   if (downloadFolder == null) {
     directoryPath = Path.resolve(__dirname, IMAGE_DIR, item.date);
   } else if (!FS.existsSync(downloadFolder)) {
-    directoryPath = Path.resolve(Path.resolve(__dirname, IMAGE_DIR), item.date)
-    console.log(`Folder ${downloadFolder} does not exist, using this one instead: ${Path.resolve(__dirname, IMAGE_DIR)}`)
-  }
-  else {
+    directoryPath = Path.resolve(Path.resolve(__dirname, IMAGE_DIR), item.date);
+    console.log(
+      `Folder ${downloadFolder} does not exist, using this one instead: ${Path.resolve(
+        __dirname,
+        IMAGE_DIR,
+      )}`,
+    );
+  } else {
     directoryPath = Path.resolve(downloadFolder, item.date);
   }
 
@@ -40,7 +44,7 @@ export async function processItemDownload(
 async function downloadFileIfNotExists(
   dojoAPI: DojoAPI,
   url: string,
-  filePath: string
+  filePath: string,
 ): Promise<void> {
   const exists = fileExists(filePath);
   if (!exists) {

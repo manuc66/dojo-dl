@@ -22,10 +22,10 @@ async function main(): Promise<void> {
     await processItemDownload(downloadFolder, dojoAPI, item, knownDate);
 
   const maxConcurrentOp = 4;
-  const totalItems = await processConcurrently(
+  const totalItems: number = await processConcurrently(
     maxConcurrentOp,
     getItems,
-    processItem
+    processItem,
   );
 
   console.log(`Total items: ${totalItems}`);
@@ -35,7 +35,7 @@ function readEnv(envName: string) {
   let envValue = process.env[envName];
   if (!envValue) {
     throw new Error(
-      `Configuration missing for '${envName}', missing entry in the .env file.`
+      `Configuration missing for '${envName}', missing entry in the .env file.`,
     );
   } else {
     return envValue;

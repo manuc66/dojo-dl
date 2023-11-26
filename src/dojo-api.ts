@@ -14,7 +14,7 @@ export class DojoAPI {
       axios.create({
         jar: new CookieJar(),
         withCredentials: true,
-      })
+      }),
     );
   }
 
@@ -71,7 +71,7 @@ export interface Item {
 
 function* getItem(
   attachment: FeedItemAttachments,
-  date: string
+  date: string,
 ): Generator<Item> {
   if (attachment.sources && attachment.sources.length > 0) {
     for (const source of attachment.sources) {
@@ -110,7 +110,7 @@ function* getFeedItems(feed: FeedRessource): Generator<Item> {
 
 async function getFeedContent(
   client: AxiosInstance,
-  url: string
+  url: string,
 ): Promise<FeedRessource> {
   const storyFeed = await client.get(url);
   return storyFeed.data;
