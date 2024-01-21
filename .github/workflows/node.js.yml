@@ -30,3 +30,20 @@ jobs:
     - run: npm install
     - run: npm run build --if-present
     - run: npm test
+  build-linux-se:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm install
+      - run: node --experimental-sea-config sea-config.json
+      - run: cp $(command -v node) dojo-dl
+      - run: npx postject dojo-dl NODE_SEA_BLOB sea-prep.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 --overwrite
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dojo-dl-linux-x64
+          path: dojo-dl

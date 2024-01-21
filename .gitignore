@@ -131,3 +131,6 @@ dist
 
 # default download folder
 /images/
+
+# single file bundle
+/dojo-dl-single-file.js
