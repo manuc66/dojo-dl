@@ -43,6 +43,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm install
+      - run: npm run single-build
       - run: node --experimental-sea-config sea-config.json
       - run: cp $(command -v node) dojo-dl
       - run: npx postject dojo-dl NODE_SEA_BLOB sea-prep.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 --overwrite
