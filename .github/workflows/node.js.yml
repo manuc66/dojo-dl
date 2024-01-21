@@ -57,6 +57,10 @@ jobs:
       matrix:
         node-version: [ 20.x ]
     steps:
+      - uses: ChristopheLav/windows-sdk-install@v1
+        with:
+          version-sdk: 22621
+          features: 'OptionId.SigningTools'
       - uses: actions/checkout@v2
       - name: Set up Node.js
         uses: actions/setup-node@v2
