@@ -11,6 +11,7 @@
     "start": "ts-node src/index.ts",
     "build": "tsc -p .",
     "built-start": "tsc -p . && node --trace-warnings ./dist/index.js",
+    "single-build": "esbuild src/index.ts --bundle --platform=node --outfile=dojo-dl-single-file.js",
     "prettier": "prettier --write \"src/**/*.ts\"",
     "test": "npx mocha --require ts-node/register ./test/**/*.test.ts"
   },
@@ -38,7 +39,9 @@
     "ts-mockito": "^2.6.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
-    "yarn": "^1.22.19"
+    "yarn": "^1.22.19",
+    "esbuild": "^0.19.11",
+    "deasync": "^0.1.29"
   },
   "dependencies": {
     "axios": "^1.6.0",

@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "outDir": "dist",
+    "lib": ["es2022"],
     "module": "commonjs",
-    "target": "es2019",
+    "target": "es2022",
     "noImplicitAny": true,
     "sourceMap": true,
     "inlineSources": true,
