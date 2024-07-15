@@ -40,7 +40,7 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
     "yarn": "^1.22.19",
-    "esbuild": "^0.21.3",
+    "esbuild": "^0.23.0",
     "deasync": "^0.1.29"
   },
   "dependencies": {
