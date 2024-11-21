@@ -49,6 +49,7 @@
     "dotenv": "^16.3.1",
     "mkdirp": "^3.0.1",
     "moment": "^2.29.4",
-    "tough-cookie": "^5.0.0"
-  }
+    "tough-cookie": "^5.0.0",
+    "uuid": "^11.0.3"
+  },
 }
