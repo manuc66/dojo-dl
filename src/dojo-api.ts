@@ -3,6 +3,8 @@ import moment from "moment";
 import { wrapper } from "axios-cookiejar-support";
 import { CookieJar } from "tough-cookie";
 import fs from "fs";
+import { v4 as uuidv4 } from 'uuid';
+
 
 const FEED_URL = "https://home.classdojo.com/api/storyFeed?includePrivate=true";
 
@@ -81,15 +83,25 @@ function* getItem(
 
   const url = attachment.path;
   const resourceName = getResourceName(url);
+
   const extIndex = resourceName.lastIndexOf(".");
-  let fileName = attachment.metadata.filename;
-  if (fileName && extIndex > 0) {
-    const extRes = resourceName.substring(extIndex).toLowerCase();
-    if (fileName.toLowerCase().endsWith(extRes)) {
-      fileName = fileName.substring(0, fileName.length - extRes.length) + "_";
-    }
+  let fileName!: string;
+  if(!attachment.metadata) {
+    fileName = ""
   } else {
-    fileName = "";
+    fileName = attachment.metadata.filename;
+    if (fileName && extIndex > 0) {
+      const extRes = resourceName.substring(extIndex).toLowerCase();
+      if (fileName.toLowerCase().endsWith(extRes)) {
+        fileName = fileName.substring(0, fileName.length - extRes.length) + "_";
+      }
+    } else {
+      fileName = "";
+    }
+  }
+
+  if(fileName.trim().length === 0) {
+    fileName = `file-${uuidv4()}`
   }
 
   const filename = fileName + resourceName;
