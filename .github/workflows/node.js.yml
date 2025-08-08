@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [19.x, 20.x]
+        node-version: [20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -36,9 +36,9 @@ jobs:
       matrix:
         node-version: [ 20.x ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -47,7 +47,7 @@ jobs:
       - run: node --experimental-sea-config sea-config.json
       - run: cp $(command -v node) dojo-dl
       - run: npx postject dojo-dl NODE_SEA_BLOB sea-prep.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 --overwrite
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: dojo-dl-linux-x64
           path: dojo-dl
@@ -60,9 +60,9 @@ jobs:
       - name: Setup code sign environment
         run: |
           echo "$(Split-Path -Path $(Get-ChildItem -Path "${env:ProgramFiles(x86)}\Windows Kits\10\App Certification Kit\signtool.exe"))" >> $env:GITHUB_PATH
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -73,7 +73,7 @@ jobs:
       - run: signtool remove /s dojo-dl.exe
       - run: npx postject dojo-dl.exe NODE_SEA_BLOB sea-prep.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 --overwrite
       #- run: signtool remove /s dojo-dl.exe # A certificate needs to be present for this to work. However, the unsigned binary would still be runnable.
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: dojo-dl-window-x64
           path: dojo-dl.exe

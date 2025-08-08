@@ -1,10 +1,10 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 import moment from "moment";
 import { wrapper } from "axios-cookiejar-support";
 import { CookieJar } from "tough-cookie";
 import fs from "fs";
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
+import * as Stream from "node:stream";
 
 const FEED_URL = "https://home.classdojo.com/api/storyFeed?includePrivate=true";
 
@@ -33,7 +33,7 @@ export class DojoAPI {
   async *getAllItems() {
     let feedUrl: string | null = FEED_URL;
     while (feedUrl != null) {
-      let feed = await getFeedContent(this.client, feedUrl);
+      const feed = await getFeedContent(this.client, feedUrl);
       yield* getFeedItems(feed);
       if (feed._links && feed._links.prev && feed._links.prev.href) {
         feedUrl = feed._links.prev.href;
@@ -46,7 +46,7 @@ export class DojoAPI {
   async downloadFile(url: string, filePath: string) {
     const writer = fs.createWriteStream(filePath);
 
-    const response = await this.client.get(url, {
+    const response: AxiosResponse<Stream> = await this.client.get(url, {
       responseType: "stream",
     });
 
@@ -57,9 +57,9 @@ export class DojoAPI {
         console.log(`Download finished: ${filePath}`);
         resolve();
       });
-      writer.on("error", () => {
+      writer.on("error", (err: Error) => {
         fs.rmSync(filePath);
-        reject();
+        reject(err);
       });
     });
   }
@@ -86,8 +86,8 @@ function* getItem(
 
   const extIndex = resourceName.lastIndexOf(".");
   let fileName!: string;
-  if(!attachment.metadata) {
-    fileName = ""
+  if (!attachment.metadata) {
+    fileName = "";
   } else {
     fileName = attachment.metadata.filename;
     if (fileName && extIndex > 0) {
@@ -100,8 +100,8 @@ function* getItem(
     }
   }
 
-  if(fileName.trim().length === 0) {
-    fileName = `file-${uuidv4()}`
+  if (fileName.trim().length === 0) {
+    fileName = `file-${uuidv4()}`;
   }
 
   const filename = fileName + resourceName;
@@ -125,7 +125,7 @@ async function getFeedContent(
   url: string,
 ): Promise<FeedRessource> {
   const storyFeed = await client.get(url);
-  return storyFeed.data;
+  return storyFeed.data as FeedRessource;
 }
 
 function getResourceName(url: string) {
