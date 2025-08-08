@@ -5,13 +5,15 @@ import { processItemDownload } from "./download";
 
 config();
 
-main();
+void (async () => {
+  await main();
+})();
 
 async function main(): Promise<void> {
   const email = readEnv("DOJO_EMAIL");
   const password = readEnv("DOJO_PASSWORD");
   const downloadFolder = readEnv("DOWNLOAD_FOLDER");
-  let dojoAPI = new DojoAPI();
+  const dojoAPI = new DojoAPI();
 
   await dojoAPI.login(email, password);
 
@@ -32,7 +34,7 @@ async function main(): Promise<void> {
 }
 
 function readEnv(envName: string) {
-  let envValue = process.env[envName];
+  const envValue = process.env[envName];
   if (!envValue) {
     throw new Error(
       `Configuration missing for '${envName}', missing entry in the .env file.`,

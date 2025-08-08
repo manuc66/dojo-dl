@@ -51,7 +51,7 @@ async function downloadFileIfNotExists(
     try {
       await dojoAPI.downloadFile(url, filePath);
     } catch (error) {
-      console.error("Failed to download file ", url);
+      console.error("Failed to download file ", url, error);
     }
   }
 }
@@ -60,7 +60,7 @@ function fileExists(filePath: string): boolean {
   try {
     fs.accessSync(filePath, fs.constants.R_OK | fs.constants.W_OK);
     return true;
-  } catch (err) {
+  } catch {
     return false;
   }
 }
