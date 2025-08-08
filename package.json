@@ -45,7 +45,7 @@
     "typescript": "^5.2.2",
     "typescript-eslint": "^8.33.1",
     "yarn": "^1.22.19",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.0",
     "deasync": "^0.1.29"
   },
   "dependencies": {
