@@ -1,10 +1,36 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import moment from "moment";
 import { wrapper } from "axios-cookiejar-support";
 import { CookieJar } from "tough-cookie";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 import * as Stream from "node:stream";
+import { createInterface } from 'node:readline';
+
+interface ErrorResponse {
+  error: {
+    type?: number; // 401 in this case
+    message?: string; // 'Unauthenticated'
+    detail?: string; // 'Must enter a one time code to log in'
+    code?: string; // 'ERR_MUST_USE_OTC_USER_OPTED_IN'
+    fallbackMessage?: string; // "ClassDojo wants to keep your account safe. We've sent a one-time login code to your@account.tld."
+    expected?: boolean; // true
+  };
+}
+
+async function promptForCode(): Promise<string> {
+  const rl = createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve) => {
+    rl.question('Please enter the one-time code sent to your email: ', (code) => {
+      rl.close();
+      resolve(code);
+    });
+  });
+}
 
 const FEED_URL = "https://home.classdojo.com/api/storyFeed?includePrivate=true";
 
@@ -20,14 +46,44 @@ export class DojoAPI {
     );
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<void> {
     const LOGIN_URL = "https://home.classdojo.com/api/session";
 
-    return await this.client.post(LOGIN_URL, {
+    const loginPayload: { login: string; password: string; resumeAddClassFlow: boolean; code?: string } = {
       login: email,
       password: password,
       resumeAddClassFlow: false,
-    });
+    };
+
+    let attempt = 0;
+    while (attempt < 3) {
+      try {
+        // Attempt to log in without a code first
+        return await this.client.post(LOGIN_URL, loginPayload);
+      } catch (error) {
+        if (error instanceof AxiosError && error.response && error.response.status === 401) {
+          console.error('Unauthorized: Invalid credentials');
+
+          // Access the error payload
+          const structuredResponse = error.response.data as ErrorResponse;
+
+          if (structuredResponse.error.type === 401 && structuredResponse.error.code === "ERR_MUST_USE_OTC_USER_OPTED_IN") {
+            console.log(structuredResponse.error.fallbackMessage);
+
+            // Prompt for the one-time code
+            loginPayload.code = await promptForCode(); // Add the code to the payload for the next attempt
+          } else {
+            // Handle other 401 errors or throw an error
+            throw new Error('Unauthorized access. Please check your credentials.');
+          }
+        } else {
+          // Handle other errors
+          console.error('An error occurred:', error);
+          throw error; // Re-throw the error for further handling
+        }
+      }
+      attempt++;
+    }
   }
 
   async *getAllItems() {
