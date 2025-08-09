@@ -37,7 +37,17 @@ export async function processItemDownload(
     }
     knownDate.add(item.date);
   }
-  const filePath = Path.resolve(directoryPath, item.name);
+
+  let qmIndex: number = item.name.indexOf("?");
+  let fileName: string ;
+  if (qmIndex > 0) {
+    fileName = item.name.substring(0, qmIndex);
+  }
+  else {
+    fileName = item.name;
+  }
+
+  const filePath = Path.resolve(directoryPath, fileName);
   await downloadFileIfNotExists(dojoAPI, item.url, filePath);
 }
 
