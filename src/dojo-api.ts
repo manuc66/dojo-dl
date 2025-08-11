@@ -67,7 +67,9 @@ export class DojoAPI {
           // Access the error payload
           const structuredResponse = error.response.data as ErrorResponse;
 
-          if (structuredResponse.error.type === 401 && structuredResponse.error.code === "ERR_MUST_USE_OTC_USER_OPTED_IN") {
+          if (structuredResponse.error.type === 401 && 
+              (structuredResponse.error.code === "ERR_MUST_USE_OTC_USER_OPTED_IN" || 
+               structuredResponse.error.code === "ERR_MUST_USE_OTC_ANOMALOUS_LOGIN")) {
             console.log(structuredResponse.error.fallbackMessage);
 
             // Prompt for the one-time code
