@@ -1,8 +1,9 @@
 import { mkdirp } from "mkdirp";
-import { DojoAPI, Item } from "./dojo-api";
+import { DojoAPI } from "./dojo-api";
 import Path from "path";
 import FS from "fs";
 import fs from "fs";
+import { Item } from "./item";
 
 const IMAGE_DIR = "../images";
 function createDirectory(path: string): boolean {

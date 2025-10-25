@@ -1,7 +1,9 @@
 import { config } from "dotenv";
-import { DojoAPI, Item } from "./dojo-api";
+import { DojoAPI } from "./dojo-api";
 import { processConcurrently } from "./throttling";
 import { processItemDownload } from "./download";
+import { Item } from "./item";
+import { createInterface } from "node:readline";
 
 config();
 
@@ -15,7 +17,7 @@ async function main(): Promise<void> {
   const downloadFolder = readEnv("DOWNLOAD_FOLDER");
   const dojoAPI = new DojoAPI();
 
-  await dojoAPI.login(email, password);
+  await dojoAPI.login(email, password, promptForCode);
 
   const knownDate = new Set<string>();
 
@@ -42,4 +44,18 @@ function readEnv(envName: string) {
   } else {
     return envValue;
   }
+}
+
+async function promptForCode(): Promise<string> {
+  const rl = createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve) => {
+    rl.question('Please enter the one-time code sent to your email: ', (code) => {
+      rl.close();
+      resolve(code);
+    });
+  });
 }
