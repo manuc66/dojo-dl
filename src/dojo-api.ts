@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import moment from "moment";
 import { wrapper } from "axios-cookiejar-support";
-import { CookieJar } from "tough-cookie";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 import * as Stream from "node:stream";
@@ -9,6 +8,7 @@ import { FeedItemAttachments } from "./feed-item-attachments";
 import { FeedRessource } from "./feed-ressource";
 import { Item } from "./item";
 import { ErrorResponse } from "./error-response";
+import { CookieJar } from "tough-cookie";
 
 const FEED_URL = "https://home.classdojo.com/api/storyFeed?includePrivate=true";
 
